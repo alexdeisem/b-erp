@@ -5,13 +5,13 @@ services:
     build:
       context: ./docker/nginx
     volumes:
-      - ../erp:/var/www/erp
+      - ./:/var/www/erp
     container_name: ${PROJECT_NAME}-nginx
     restart: always
     networks:
       - erp
     ports:
-      - '8081:80'
+      - '8080:80'
 
   php-fpm:
     build:
@@ -21,7 +21,7 @@ services:
       context: ./
       dockerfile: ./docker/php-fpm/Dockerfile
     volumes:
-      - ../erp:/var/www/erp
+      - ./:/var/www/erp
     container_name: ${PROJECT_NAME}-php-fpm
     networks:
       - erp
