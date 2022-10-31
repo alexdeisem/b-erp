@@ -5,7 +5,7 @@ services:
     build:
       context: ./docker/nginx
     volumes:
-      - ../erp:/var/www/erp
+      - ./:/var/www/erp
     container_name: ${PROJECT_NAME}-nginx
     restart: always
     networks:
@@ -21,7 +21,7 @@ services:
       context: ./
       dockerfile: ./docker/php-fpm/Dockerfile
     volumes:
-      - ../erp:/var/www/erp
+      - ./:/var/www/erp
     container_name: ${PROJECT_NAME}-php-fpm
     networks:
       - erp

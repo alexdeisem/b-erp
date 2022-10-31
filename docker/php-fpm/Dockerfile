@@ -21,6 +21,4 @@ WORKDIR /var/www/erp
 
 COPY --from=composer /usr/bin/composer /usr/bin/composer
 
-COPY ./ ./
-
-RUN composer install
+COPY . ./
