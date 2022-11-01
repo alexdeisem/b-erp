@@ -19,18 +19,15 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class CustomerService extends BaseService implements CustomerServiceInterface
 {
-    private EntityManagerInterface $entityManager;
-
     private CustomerRepository $customerRepository;
 
     public function __construct(
         EntityManagerInterface $entityManager,
+        ValidatorInterface $validator,
         CustomerRepository $customerRepository,
-        ValidatorInterface $validator
     )
     {
-        parent::__construct($validator);
-        $this->entityManager      = $entityManager;
+        parent::__construct($entityManager, $validator);
         $this->customerRepository = $customerRepository;
     }
 
