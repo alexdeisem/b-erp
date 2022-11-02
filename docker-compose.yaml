@@ -30,6 +30,13 @@ services:
     environment:
       - PHP_IDE_CONFIG=serverName=${PROJECT_NAME}
 
+  rabbitmq:
+    image: rabbitmq:3.11-management
+    ports:
+      - '5672:15672'
+    networks:
+      - erp
+
   mysql:
     image: mysql:8.0
     command: --default-authentication-plugin=mysql_native_password
