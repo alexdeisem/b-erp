@@ -11,10 +11,12 @@ RUN apt-get update && apt-get install -y \
     libmcrypt-dev \
     libxml2-dev \
     libzip-dev \
+    librabbitmq-dev \
     zip
 
 RUN docker-php-ext-install pdo pdo_mysql mbstring
 
+RUN pecl install amqp-1.11.0 && docker-php-ext-enable amqp
 RUN pecl install xdebug-3.1.5 && docker-php-ext-enable xdebug
 
 WORKDIR /var/www/erp

@@ -3,17 +3,19 @@
 
 namespace App\Service\Customer;
 
+use DateTimeImmutable;
 
 use App\Dto\Customer\CustomerDto;
 use App\Dto\Customer\CustomerSearchDto;
 use App\Entity\Customer;
 use App\Exception\NotFoundException;
 use App\Exception\ValidationException;
+use App\Message\Message\Customer\CustomerCreatedMessage;
 use App\Repository\CustomerRepository;
 use App\Service\BaseService;
 
-use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 
@@ -21,14 +23,18 @@ class CustomerService extends BaseService implements CustomerServiceInterface
 {
     private CustomerRepository $customerRepository;
 
+    private MessageBusInterface $messageBus;
+
     public function __construct(
         EntityManagerInterface $entityManager,
         ValidatorInterface $validator,
         CustomerRepository $customerRepository,
+        MessageBusInterface $messageBus,
     )
     {
         parent::__construct($entityManager, $validator);
         $this->customerRepository = $customerRepository;
+        $this->messageBus         = $messageBus;
     }
 
     /**
@@ -80,6 +86,7 @@ class CustomerService extends BaseService implements CustomerServiceInterface
         $this->validate($customer);
 
         $this->customerRepository->save($customer, true);
+        $this->messageBus->dispatch(new CustomerCreatedMessage($customer->getId()));
 
         return $customer;
     }
